@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yuxi Yang — Software Engineer & ML Researcher</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF6F1;
+    --warm-white: #FFF9F3;
+    --parchment: #F0E8DE;
+    --ink: #2C2420;
+    --ink-light: #5A4F47;
+    --ink-muted: #8A7E74;
+    --terracotta: #C4704B;
+    --terracotta-light: #D4896A;
+    --sage: #7A8B6F;
+    --sage-light: #A3B496;
+    --gold: #B8963E;
+    --gold-light: #D4B86A;
+    --rule: #D9CEBC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 17px;
+  }
+
+  body {
+    background-color: var(--cream);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--terracotta-light);
+    color: var(--warm-white);
+  }
+
+  /* ── Grain Overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ── Navigation ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(250, 246, 241, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+    transition: transform 0.4s ease;
+  }
+
+  nav .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+
+  nav .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  nav .nav-links a {
+    text-decoration: none;
+    color: var(--ink-muted);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: color 0.3s;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  nav .nav-links a:hover {
+    color: var(--terracotta);
+  }
+
+  /* ── Hero Section ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 3rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.2rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .hero-intro {
+    font-size: 1.1rem;
+    line-height: 1.85;
+    color: var(--ink-light);
+    max-width: 620px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .hero-meta a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .hero-meta a:hover { color: var(--terracotta); }
+
+  .hero-meta a::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sage);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  .hero-scroll-hint span {
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: var(--rule);
+    margin: 0 auto;
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* ── Section Commons ── */
+  section {
+    padding: 5rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.6rem;
+    font-weight: 300;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 3rem;
+    color: var(--ink);
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--rule);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── Experience ── */
+  .exp-item {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+
+  .exp-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.4rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .exp-role {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .exp-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .exp-company {
+    font-size: 0.95rem;
+    color: var(--terracotta);
+    font-style: italic;
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .exp-details {
+    list-style: none;
+    padding: 0;
+  }
+
+  .exp-details li {
+    position: relative;
+    padding-left: 1.2rem;
+    margin-bottom: 0.6rem;
+    color: var(--ink-light);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .exp-details li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--sage);
+  }
+
+  /* ── Projects ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--warm-white);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: all 0.4s ease;
+    cursor: default;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .project-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .project-card:hover {
+    border-color: var(--terracotta-light);
+    box-shadow: 0 8px 32px rgba(44, 36, 32, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .project-card.visible:hover {
+    transform: translateY(-2px);
+  }
+
+  .project-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.8rem;
+    display: inline-block;
+  }
+
+  .project-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .project-card p {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .project-highlight {
+    margin-top: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Skills ── */
+  .skills-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  .skill-group {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+
+  .skill-group.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .skill-group-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid var(--rule);
+    color: var(--ink-light);
+    background: var(--warm-white);
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+  }
+
+  .skill-tag:hover {
+    border-color: var(--terracotta-light);
+    color: var(--terracotta);
+    background: rgba(196, 112, 75, 0.06);
+  }
+
+  /* ── Publications ── */
+  .pub-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+
+  .pub-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .pub-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+    line-height: 1.45;
+  }
+
+  .pub-venue {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--terracotta);
+    font-family: 'Playfair Display', serif;
+  }
+
+  .pub-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-muted);
+    margin-top: 0.3rem;
+  }
+
+  /* ── Education ── */
+  .edu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+
+  .edu-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .edu-school {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .edu-degree {
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    font-weight: 300;
+    margin-top: 0.2rem;
+  }
+
+  .edu-right {
+    text-align: right;
+  }
+
+  .edu-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+  }
+
+  .edu-honor {
+    font-size: 0.82rem;
+    color: var(--gold);
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* ── Footer ── */
+  footer {
+    padding: 4rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  footer .footer-cta {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  footer .footer-cta em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--rule);
+    border-radius: 24px;
+    transition: all 0.3s ease;
+  }
+
+  .contact-link:hover {
+    color: var(--terracotta);
+    border-color: var(--terracotta-light);
+    background: rgba(196, 112, 75, 0.05);
+  }
+
+  .footer-note {
+    margin-top: 3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 0.8; transform: scaleY(1.3); }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    nav .nav-links { gap: 1rem; }
+    nav .nav-links a { font-size: 0.72rem; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    section { padding: 3.5rem 1.5rem; }
+    .hero-meta { flex-direction: column; gap: 0.8rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .skills-area { grid-template-columns: 1fr; }
+    .exp-header { flex-direction: column; }
+    .edu-item { flex-direction: column; }
+    .edu-right { text-align: left; }
+    footer { padding: 3rem 1.5rem; }
+    footer .footer-cta { font-size: 1.4rem; }
+  }
+
+  @media (max-width: 480px) {
+    html { font-size: 15px; }
+    nav .nav-links { gap: 0.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo">Y. Yang</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="about">
+  <p class="hero-eyebrow">Johns Hopkins University · M.S.E. in ECE</p>
+  <h1>Hi, I'm <em>Yuxi Yang</em>.<br>I build intelligent systems<br>that see &amp; understand.</h1>
+  <p class="hero-intro">
+    A software engineer and ML researcher focused on deep learning, computer vision, and 
+    multimodal AI. From fine-tuning LLMs on medical data to deploying real-time models 
+    on autonomous vehicles — I bring research ideas into production.
+  </p>
+  <div class="hero-meta">
+    <a href="mailto:yyang269@jh.edu">yyang269@jh.edu</a>
+    <a href="https://github.com/YuxiYang01" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/yang-yuxi" target="_blank">LinkedIn</a>
+    <a href="tel:848-304-9001">848-304-9001</a>
+  </div>
+  <div class="hero-scroll-hint"><span></span></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Experience -->
+<section id="experience">
+  <p class="section-label">Chapter One</p>
+  <h2 class="section-title">Experience</h2>
+
+  <div class="exp-item">
+    <div class="exp-header">
+      <span class="exp-role">Embedded Software Intern</span>
+      <span class="exp-date">Aug 2023 – Aug 2024</span>
+    </div>
+    <div class="exp-company">Autonomous Driving Division — iFLYTEK</div>
+    <ul class="exp-details">
+      <li>Built production-grade middleware modules on Linux/QNX using C++11 and POSIX multithreading; contributed to AUTOSAR Adaptive Platform and ROS2-based service architecture.</li>
+      <li>Participated in real vehicle testing and performance tuning for parking assist systems; conducted debugging with gdb and valgrind across multi-model deployments.</li>
+    </ul>
+  </div>
+
+  <div class="exp-item">
+    <div class="exp-header">
+      <span class="exp-role">AI Research Intern</span>
+      <span class="exp-date">May 2021 – Sep 2021</span>
+    </div>
+    <div class="exp-company">Medical Multimodal Team — iFLYTEK</div>
+    <ul class="exp-details">
+      <li>Processed and annotated large-scale multimodal datasets (text, image, video) using pre-labeling tools and human-in-the-loop verification pipelines to support model training at scale.</li>
+      <li>Fine-tuned LLMs and vision-language models on medical domain data for tasks including image captioning, entity recognition, and diagnosis suggestion.</li>
+      <li>Built lightweight detection models integrated into structured data annotation pipelines; evaluated model outputs and iterated on performance with research and engineering teams.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Projects -->
+<section id="projects">
+  <p class="section-label">Chapter Two</p>
+  <h2 class="section-title">Projects</h2>
+
+  <div class="projects-grid">
+    <div class="project-card">
+      <span class="project-tag">Deep Learning</span>
+      <h3>CNN &amp; Vision Transformer on CIFAR-10</h3>
+      <p>Implemented ResNet (2.8M params) achieving 93% test accuracy; trained ViT with cosine LR scheduling, mixed precision, and systematic convergence analysis on large-scale image data.</p>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag">Model Optimization · ACM GAIIS 2024</span>
+      <h3>INT8 Quantization of YOLOv5</h3>
+      <p>Built PyTorch → ONNX → TensorRT deployment pipeline; applied INT8 post-training quantization achieving 4.17× throughput improvement with only 0.6 mAP drop and 70% model size reduction.</p>
+      <div class="project-highlight">789 → 189 QPS</div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag">Image Processing</span>
+      <h3>Image Denoising Benchmark</h3>
+      <p>Implemented and evaluated 6 classical algorithms (MAP-L2, ROF, TGV2, Non-Local Means, Bilateral Filter) across 50 COCO images with statistical performance analysis.</p>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag">3D Vision</span>
+      <h3>NeRF-based 3D Scene Reconstruction</h3>
+      <p>Trained Nerfacto model on a 59-view custom dataset; compared volumetric NeRF vs. Gaussian Splatting on rendering efficiency, memory footprint, and reconstruction fidelity.</p>
+      <div class="project-highlight">COLMAP + Nerfacto</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Skills -->
+<section id="skills">
+  <p class="section-label">Chapter Three</p>
+  <h2 class="section-title">Skills</h2>
+
+  <div class="skills-area">
+    <div class="skill-group">
+      <h3 class="skill-group-title">Programming</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">LaTeX</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3 class="skill-group-title">Deep Learning</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">PyTorch</span>
+        <span class="skill-tag">CNN</span>
+        <span class="skill-tag">Vision Transformer</span>
+        <span class="skill-tag">ONNX</span>
+        <span class="skill-tag">TensorRT</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3 class="skill-group-title">ML &amp; Data</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Multimodal Data Processing</span>
+        <span class="skill-tag">Model Fine-tuning</span>
+        <span class="skill-tag">Domain Adaptation</span>
+        <span class="skill-tag">Statistical Analysis</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3 class="skill-group-title">Systems</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Linux</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">ROS2</span>
+        <span class="skill-tag">POSIX</span>
+        <span class="skill-tag">TCP/IP</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Publications -->
+<section id="publications">
+  <p class="section-label">Chapter Four</p>
+  <h2 class="section-title">Publications</h2>
+
+  <div class="pub-item">
+    <div class="pub-title">Quantization and Acceleration of YOLOv5 Vehicle Detection Based on GPU Chips</div>
+    <div class="pub-venue">Proceedings of the ACM</div>
+    <div class="pub-date">May 2024</div>
+  </div>
+
+  <div class="pub-item">
+    <div class="pub-title">Game-Theory Based Task Allocation</div>
+    <div class="pub-venue">IEEE Vehicular Technology Conference (VTC-Fall)</div>
+    <div class="pub-date">Sep 2025</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Education -->
+<section id="education">
+  <p class="section-label">Foundation</p>
+  <h2 class="section-title">Education</h2>
+
+  <div class="edu-item">
+    <div>
+      <div class="edu-school">Johns Hopkins University</div>
+      <div class="edu-degree">M.S.E. in Electrical and Computer Engineering</div>
+    </div>
+    <div class="edu-right">
+      <div class="edu-year">Expected Dec 2026</div>
+    </div>
+  </div>
+
+  <div class="edu-item">
+    <div>
+      <div class="edu-school">Rutgers University</div>
+      <div class="edu-degree">B.S. in Electrical and Computer Engineering</div>
+    </div>
+    <div class="edu-right">
+      <div class="edu-year">May 2024</div>
+      <div class="edu-honor">Graduated with Honors</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Footer / Contact -->
+<footer id="contact">
+  <p class="footer-cta">Let's build something <em>together</em>.</p>
+  <div class="contact-links">
+    <a class="contact-link" href="mailto:yyang269@jh.edu">Email</a>
+    <a class="contact-link" href="https://github.com/YuxiYang01" target="_blank">GitHub</a>
+    <a class="contact-link" href="https://linkedin.com/in/yang-yuxi" target="_blank">LinkedIn</a>
+  </div>
+  <p class="footer-note">Available May – August 2026 · 12 weeks, full-time</p>
+</footer>
+
+<script>
+  // Scroll-triggered fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.exp-item, .project-card, .skill-group, .pub-item, .edu-item').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
