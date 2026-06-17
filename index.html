@@ -445,6 +445,20 @@
     background: var(--warm-white);
   }
 
+  .modal-repo {
+    display: inline-block;
+    margin-top: 1.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--terracotta);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+
+  .modal-repo:hover { border-bottom-color: var(--terracotta); }
+
   /* ── Skills ── */
   .skills-area {
     display: grid;
@@ -566,6 +580,14 @@
 
   .edu-right { text-align: right; }
 
+  .edu-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.2rem;
+  }
+
   .edu-honor {
     font-size: 0.82rem;
     color: var(--gold);
@@ -675,7 +697,7 @@
 
 <!-- Hero -->
 <section class="hero" id="about">
-  <p class="hero-eyebrow">Johns Hopkins University &middot; M.S.E. in ECE</p>
+  <p class="hero-eyebrow">M.S.E. in ECE &middot; Johns Hopkins University &middot; Class of 2026</p>
   <h1>Hi, I'm <em>Yuxi Yang</em>.<br>Chasing the stars through<br>code &amp; cognition.</h1>
   <p class="hero-intro">
     I believe the most beautiful machines are those that learn to see, to listen, and to understand
@@ -706,8 +728,10 @@
     </div>
     <div class="exp-company">Autonomous Driving Division &mdash; iFLYTEK</div>
     <ul class="exp-details">
-      <li>Built production-grade middleware modules on Linux/QNX using C++11 and POSIX multithreading; contributed to AUTOSAR Adaptive Platform and ROS2-based service architecture.</li>
-      <li>Participated in real vehicle testing and performance tuning for parking assist systems; conducted debugging with gdb and valgrind across multi-model deployments.</li>
+      <li>Built and validated 5+ middleware modules for autonomous vehicles using C++11, TCP/IP, and POSIX multithreading; integrated components across the AUTOSAR Adaptive Platform and a ROS2 service architecture.</li>
+      <li>Performed hardware/software integration testing on Linux/QNX embedded platforms across 3 vehicle models; used gdb and valgrind to trace and resolve 30+ production faults, reducing the critical issue backlog by 38.9%.</li>
+      <li>Optimized IPC channels with lock-free queues and shared memory, cutting inter-process latency by 19.7% in benchmark testing.</li>
+      <li>Participated in 500+ hours of real vehicle testing; produced structured fault reports covering root cause, system configuration, and corrective action for cross-functional teams of 13 engineers.</li>
     </ul>
   </div>
 
@@ -718,9 +742,8 @@
     </div>
     <div class="exp-company">Medical Multimodal Team &mdash; iFLYTEK</div>
     <ul class="exp-details">
-      <li>Processed and annotated large-scale multimodal datasets (text, image, video) using pre-labeling tools and human-in-the-loop verification pipelines to support model training at scale.</li>
-      <li>Fine-tuned LLMs and vision-language models on medical domain data for tasks including image captioning, entity recognition, and diagnosis suggestion.</li>
-      <li>Built lightweight detection models integrated into structured data annotation pipelines; evaluated model outputs and iterated on performance with research and engineering teams.</li>
+      <li>Built 3 lightweight object detection models with domain adaptation for structured annotation pipelines; reduced manual annotation time by 41.5% across 11,982 samples.</li>
+      <li>Fine-tuned vision&ndash;language models on 50,150 multimodal samples (text, image, video); improved image captioning BLEU by 12% and entity recognition F1 by 7.5% through iterative evaluation.</li>
     </ul>
   </div>
 </section>
@@ -734,10 +757,19 @@
 
   <div class="projects-grid">
 
-    <div class="project-card" data-modal="modal-cifar">
-      <span class="project-tag">Deep Learning</span>
-      <h3>CNN &amp; Vision Transformer on CIFAR-10</h3>
-      <p class="project-summary">Implemented ResNet achieving 93% accuracy; trained ViT with cosine LR scheduling and mixed precision on large-scale image data.</p>
+    <div class="project-card" data-modal="modal-esrgan">
+      <span class="project-tag">Super-Resolution &middot; GSoC 2026 / ML4SCI</span>
+      <h3>ESRGAN for CMS Calorimeter Super-Resolution</h3>
+      <p class="project-summary">Designed and trained an ESRGAN on CMS calorimeter jet images; benchmarked against bicubic and SRCNN baselines with an end-to-end PyTorch pipeline.</p>
+      <div class="project-highlight">PSNR 76.02 dB &middot; SSIM 0.9998</div>
+      <div class="project-expand-hint">&rarr; View details</div>
+    </div>
+
+    <div class="project-card" data-modal="modal-cuda">
+      <span class="project-tag">GPU Computing &middot; CUDA</span>
+      <h3>CUDA Convolution Acceleration</h3>
+      <p class="project-summary">Implemented 2D convolution kernels on NVIDIA Tesla T4 with shared memory tiling and constant memory; profiled with nvprof.</p>
+      <div class="project-highlight">~297&times; speedup over CPU baseline</div>
       <div class="project-expand-hint">&rarr; View details</div>
     </div>
 
@@ -745,14 +777,15 @@
       <span class="project-tag">Model Optimization &middot; ACM GAIIS 2024</span>
       <h3>INT8 Quantization of YOLOv5</h3>
       <p class="project-summary">Built PyTorch &rarr; ONNX &rarr; TensorRT pipeline; 4.17&times; throughput gain with only 0.6 mAP drop and 70% model size reduction.</p>
-      <div class="project-highlight">789 &rarr; 189 QPS</div>
+      <div class="project-highlight">789 vs. 189 QPS</div>
       <div class="project-expand-hint">&rarr; View details</div>
     </div>
 
-    <div class="project-card" data-modal="modal-denoise">
-      <span class="project-tag">Image Processing</span>
-      <h3>Image Denoising Benchmark</h3>
-      <p class="project-summary">Evaluated 6 classical algorithms across 50 COCO images with statistical performance analysis and variational solvers.</p>
+    <div class="project-card" data-modal="modal-cifar">
+      <span class="project-tag">Adversarial Robustness</span>
+      <h3>Adversarial Robustness &amp; ViT on CIFAR-10</h3>
+      <p class="project-summary">95.16% clean accuracy; evaluated FGSM/PGD attacks, deployed PGD adversarial training as defense, and compared against a from-scratch Tiny ViT.</p>
+      <div class="project-highlight">95.16% accuracy &middot; PGD-AT defense</div>
       <div class="project-expand-hint">&rarr; View details</div>
     </div>
 
@@ -764,26 +797,72 @@
       <div class="project-expand-hint">&rarr; View details</div>
     </div>
 
+    <div class="project-card" data-modal="modal-denoise">
+      <span class="project-tag">Image Processing</span>
+      <h3>Image Denoising Benchmark</h3>
+      <p class="project-summary">Evaluated 6 classical algorithms across 50 COCO images with statistical performance analysis and variational solvers.</p>
+      <div class="project-expand-hint">&rarr; View details</div>
+    </div>
+
   </div>
 </section>
 
 <!-- ── Project Modals ── -->
 
+<div class="modal-overlay" id="modal-esrgan">
+  <div class="modal-content">
+    <button class="modal-close" data-close="modal-esrgan">&times;</button>
+    <span class="modal-tag">Super-Resolution &middot; GSoC 2026 / ML4SCI</span>
+    <h2>ESRGAN for CMS Calorimeter Super-Resolution</h2>
+    <div class="modal-body">
+      <p>A super-resolution project developed for the Google Summer of Code 2026 application with ML4SCI, upscaling low-resolution CMS detector calorimeter jet images (64&times;64 &rarr; 125&times;125) for high-energy physics analysis.</p>
+      <h4>Approach</h4>
+      <p>Designed and trained an ESRGAN model on CMS calorimeter jet image data, building an end-to-end PyTorch pipeline spanning data preprocessing, adversarial training, and quantitative benchmarking. Evaluated the model against bicubic interpolation and SRCNN baselines to isolate the contribution of the generative adversarial approach.</p>
+      <h4>Key Results</h4>
+      <p>Achieved PSNR 76.02 dB and SSIM 0.9998 on the held-out evaluation set, substantially outperforming the classical baselines and demonstrating the viability of GAN-based super-resolution for detector image reconstruction.</p>
+    </div>
+    <div class="modal-tech">
+      <span>PyTorch</span><span>ESRGAN</span><span>GAN</span><span>Super-Resolution</span><span>PSNR / SSIM</span><span>ML4SCI</span>
+    </div>
+    <a class="modal-repo" href="https://github.com/YuxiYang01/GSoc-2026-ML4SCI-task2b" target="_blank">&rarr; GitHub Repository</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-cuda">
+  <div class="modal-content">
+    <button class="modal-close" data-close="modal-cuda">&times;</button>
+    <span class="modal-tag">GPU Computing &middot; CUDA</span>
+    <h2>CUDA Convolution Acceleration</h2>
+    <div class="modal-body">
+      <p>A from-scratch CUDA C++ implementation of 2D image convolution, benchmarked across three progressively optimized versions to quantify the impact of GPU memory hierarchy.</p>
+      <h4>Implementation</h4>
+      <p>Implemented 2D convolution kernels on an NVIDIA Tesla T4, using shared memory tiling to reuse pixel data across threads and constant memory to cache filter weights. Profiled each version with nvprof to attribute speedups to specific memory-access optimizations.</p>
+      <h4>Key Results</h4>
+      <p>Benchmarked a CPU baseline, a naive GPU kernel, and the shared-memory-optimized GPU kernel, achieving roughly a 297&times; speedup over the CPU baseline. Published to GitHub as cuda-convolution.</p>
+    </div>
+    <div class="modal-tech">
+      <span>CUDA</span><span>C++</span><span>Shared Memory</span><span>Constant Memory</span><span>nvprof</span><span>Tesla T4</span>
+    </div>
+    <a class="modal-repo" href="https://github.com/YuxiYang01/CUDA--convolution" target="_blank">&rarr; GitHub Repository</a>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modal-cifar">
   <div class="modal-content">
     <button class="modal-close" data-close="modal-cifar">&times;</button>
-    <span class="modal-tag">Deep Learning</span>
-    <h2>Deep CNN and Vision Transformer Training on CIFAR-10</h2>
+    <span class="modal-tag">Adversarial Robustness</span>
+    <h2>Adversarial Robustness and Vision Transformers on CIFAR-10</h2>
     <div class="modal-body">
-      <p>A comprehensive study comparing convolutional and attention-based architectures on the CIFAR-10 benchmark, exploring the fundamental trade-offs between inductive bias and data-driven learning.</p>
-      <h4>Approach</h4>
-      <p>Implemented a ResNet model with 2.8M parameters from scratch using PyTorch. The network was trained with standard augmentation techniques including random cropping and horizontal flipping, achieving 93% test accuracy. In parallel, trained a Vision Transformer (ViT) to understand how self-attention mechanisms compare with convolutional feature extraction on relatively small-scale datasets.</p>
-      <h4>Key Results</h4>
-      <p>Conducted systematic convergence analysis comparing both architectures. Applied cosine learning rate scheduling and mixed precision (FP16) training to accelerate convergence. Documented the effect of patch size, depth, and attention heads on ViT performance, revealing the data-efficiency gap between CNNs and transformers at the CIFAR-10 scale.</p>
+      <p>A study of how deep convolutional networks and Vision Transformers hold up under adversarial pressure, covering attack, defense, and architectural comparison on the CIFAR-10 benchmark.</p>
+      <h4>Classification &amp; Attacks</h4>
+      <p>Trained a deep CNN classifier reaching 95.16% clean test accuracy, then evaluated its robustness under three attack methods &mdash; Gaussian noise, FGSM, and PGD &mdash; across perturbation budgets &epsilon; &isin; {0.01, 0.03, 0.10}, quantifying the accuracy degradation as attack strength increased.</p>
+      <h4>Defense &amp; Architecture</h4>
+      <p>Implemented PGD-based adversarial training as a defense and measured the recovery in robust accuracy. Built a Tiny Vision Transformer from scratch to compare attention-based and convolutional inductive biases under the same adversarial conditions. Full pipeline built with PyTorch on Google Colab.</p>
     </div>
     <div class="modal-tech">
-      <span>PyTorch</span><span>ResNet</span><span>ViT</span><span>Mixed Precision</span><span>Cosine LR</span>
+      <span>PyTorch</span><span>FGSM</span><span>PGD</span><span>Adversarial Training</span><span>Vision Transformer</span><span>CIFAR-10</span>
     </div>
+    <a class="modal-repo" href="https://github.com/YuxiYang01/CIFAR-10-Adversarial-Robustness-DCNN-Attacks-Vision-Transformer" target="_blank">&rarr; GitHub Repository</a>
   </div>
 </div>
 
@@ -840,6 +919,7 @@
     <div class="modal-tech">
       <span>COLMAP</span><span>Nerfstudio</span><span>Nerfacto</span><span>Gaussian Splatting</span><span>PyTorch</span><span>3D Reconstruction</span>
     </div>
+    <a class="modal-repo" href="https://github.com/YuxiYang01/nerf-gaussian-reconstruction" target="_blank">&rarr; GitHub Repository</a>
   </div>
 </div>
 
@@ -856,9 +936,10 @@
       <div class="skill-tags">
         <span class="skill-tag">Python</span>
         <span class="skill-tag">C++</span>
+        <span class="skill-tag">CUDA</span>
+        <span class="skill-tag">SQL</span>
         <span class="skill-tag">Java</span>
         <span class="skill-tag">Assembly</span>
-        <span class="skill-tag">HTML</span>
         <span class="skill-tag">MATLAB</span>
         <span class="skill-tag">LaTeX</span>
       </div>
@@ -870,13 +951,15 @@
         <span class="skill-tag">PyTorch</span>
         <span class="skill-tag">CNN</span>
         <span class="skill-tag">Vision Transformer</span>
+        <span class="skill-tag">GAN</span>
+        <span class="skill-tag">ESRGAN</span>
+        <span class="skill-tag">Diffusion</span>
         <span class="skill-tag">ONNX</span>
         <span class="skill-tag">TensorRT</span>
-        <span class="skill-tag">Machine Intelligence</span>
-        <span class="skill-tag">Machine Perception</span>
-        <span class="skill-tag">Multimodal Data Processing</span>
         <span class="skill-tag">Model Fine-tuning</span>
         <span class="skill-tag">Domain Adaptation</span>
+        <span class="skill-tag">Adversarial Robustness</span>
+        <span class="skill-tag">Multimodal Data Processing</span>
       </div>
     </div>
 
@@ -895,8 +978,10 @@
       <h3 class="skill-group-title">Systems &amp; Networking</h3>
       <div class="skill-tags">
         <span class="skill-tag">Linux</span>
+        <span class="skill-tag">QNX</span>
         <span class="skill-tag">Git</span>
         <span class="skill-tag">ROS2</span>
+        <span class="skill-tag">AUTOSAR</span>
         <span class="skill-tag">POSIX</span>
         <span class="skill-tag">TCP/IP</span>
         <span class="skill-tag">Data Communications &amp; Networking</span>
@@ -949,19 +1034,10 @@
   <div class="pub-item">
     <div>
       <div class="pub-title">Quantization and Acceleration of YOLOv5 Vehicle Detection Based on GPU Chips</div>
-      <div class="pub-venue">Proceedings of the ACM</div>
+      <div class="pub-venue">ACM &middot; Intl. Conf. on Generative AI and Information Security (GAIIS '24)</div>
       <div class="pub-date">May 2024</div>
     </div>
     <a class="pub-pdf" href="papers/YOLOv5.pdf" target="_blank">PDF</a>
-  </div>
-
-  <div class="pub-item">
-    <div>
-      <div class="pub-title">Game-Theory Based Task Allocation</div>
-      <div class="pub-venue">IEEE Vehicular Technology Conference (VTC-Fall)</div>
-      <div class="pub-date">Sep 2025</div>
-    </div>
-    <a class="pub-pdf" href="papers/Game_Theory_task_allocation.pdf" target="_blank">PDF</a>
   </div>
 
   <div class="pub-item">
@@ -985,14 +1061,18 @@
       <div class="edu-school">Johns Hopkins University</div>
       <div class="edu-degree">M.S.E. in Electrical and Computer Engineering</div>
     </div>
+    <div class="edu-right">
+      <div class="edu-date">Graduated May 2026</div>
+    </div>
   </div>
 
   <div class="edu-item">
     <div>
       <div class="edu-school">Rutgers University</div>
-      <div class="edu-degree">B.S. in Electrical and Computer Engineering &middot; Minor in Mathematics</div>
+      <div class="edu-degree">B.S. in Electrical and Computer Engineering &middot; School of Engineering Honors Academy</div>
     </div>
     <div class="edu-right">
+      <div class="edu-date">May 2024</div>
       <div class="edu-honor">Graduated with Honors</div>
     </div>
   </div>
